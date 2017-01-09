@@ -5,11 +5,27 @@ import { ConcreteBlock } from './concreteBlock';
 import { BoardElementType } from './boardElementType.enum';
 import { MapItemType } from '../map/mapItem/index';
 import { Map } from '../map/map';
+import { Rotation } from '../movement/movement';
 import { Robot } from '../robot/index';
 import { Point, heading } from '../../utilities/angles/index';
 
+interface IMover {
+	move: Sinon.SinonSpy;
+	turn: Sinon.SinonSpy;
+	map: any;
+}
+
 describe('ConveyorBelt', () => {
-	it('should filter by Conveyor belt using isConveyorBelt', () => {
+	let mover: IMover;
+
+	beforeEach(() => {
+		mover = {
+			move: sinon.spy(),
+			turn: sinon.spy(),
+		};
+	});
+
+	it('should filter by Conveyor belt using the board element type', () => {
 		const belt = new ConveyorBelt();
 		
 		const boardElement1 = {
@@ -37,24 +53,13 @@ describe('ConveyorBelt', () => {
 		belt.coordinate = new Point(0, 0, 0);
 		belt.heading = heading.south;
 		
-		const floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0 };
-		
 		const robot = new Robot();
 		robot.coordinate = new Point(0, 0, 0);
 		robot.heading = heading.east;	//heading should be irrelevant, test should break if not
 		
-		const map = new Map();
-		map.items.push(belt);
-		map.items.push(floor);
-		map.items.push(robot);
+		belt.execute(robot, <any>mover);
 		
-		belt.execute(robot, map);
-		
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(1);
-		expect(robot.coordinate.z).to.equal(0);
+		sinon.assert.calledOnce(mover.move);
 	});
 	
 	it('should turn the robot if the conveyer belt turns', () => {
@@ -66,24 +71,19 @@ describe('ConveyorBelt', () => {
 		belt2.coordinate = new Point(0, 1, 0);
 		belt2.heading = heading.east;
 		
-		const floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0 };
-		
 		const robot = new Robot();
 		robot.coordinate = new Point(0, 0, 0);
 		robot.heading = heading.east;
 		
-		const map = new Map();
-		map.items.push(belt1);
-		map.items.push(belt2);
-		map.items.push(floor);
-		map.items.push(robot);
+		mover.move = sinon.spy(() => robot.coordinate = robot.coordinate.add(belt1.heading));
+		mover.map = {
+			getBoardElements: () => [belt1, belt2],
+		};
 		
-		belt1.execute(robot, map);
+		belt1.execute(robot, <any>mover);
 		
-		expect(robot.heading.x).to.equal(heading.north.x);	//90 counterclockwise from east should be north
-		expect(robot.heading.y).to.equal(heading.north.y);
-		expect(robot.heading.z).to.equal(heading.north.z);
+		sinon.assert.calledOnce(mover.move);
+		sinon.assert.calledOnce(mover.turn);
+		sinon.assert.calledWith(mover.turn, robot, Rotation.counterClockwise);
 	});
 });
