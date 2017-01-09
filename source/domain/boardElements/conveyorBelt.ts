@@ -2,6 +2,7 @@ import { first, filter } from 'lodash';
 
 import { BoardElement } from './boardElement';
 import { BoardElementType } from './boardElementType.enum';
+import { BoardElementPriorities } from './boardElementPriorities.enum';
 import { Point, heading } from '../../utilities/angles/index';
 import { Map } from '../map/map';
 import { Robot } from '../robot/index';
@@ -9,7 +10,7 @@ import { Robot } from '../robot/index';
 export class ConveyorBelt extends BoardElement {
 	elementType: BoardElementType = BoardElementType.conveyorBelt;
 	heading: Point = heading.south;
-	priority = { 6: true };
+	priority: BoardElementPriorities = BoardElementPriorities.normalBelts;
 
 	constructor() {
 		super();
