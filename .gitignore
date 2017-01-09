@@ -1,0 +1,12 @@
+# Don't commit built files (*.js, *.d.ts)
+index.js
+index.d.ts
+/source/**/*.js
+/source/**/*.d.ts
+
+# Node deps
+npm-debug.log
+/node_modules/
+
+# Ignore git conflict / diff files
+*.orig
