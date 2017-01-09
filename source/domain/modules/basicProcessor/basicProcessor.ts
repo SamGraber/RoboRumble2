@@ -1,8 +1,9 @@
 import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
 import { Complexity } from '../complexity.enum';
+import { CPU } from '../cpu';
 
-export class BasicProcessor extends Module {
+export class BasicProcessor extends Module implements CPU {
 	slots: number = 2;
 	instructions: any = {};
 	cpuPriority = 0;
