@@ -1,6 +1,6 @@
-import { MapItem, MapItemType } from '../map/mapItem/index';
-import { Point, Size } from '../../utilities/angles/index';
+import { BoardElement } from './boardElement';
+import { BoardElementType } from './boardElementType.enum';
 
-export class ConcreteBlock extends MapItem {
-	type: MapItemType = MapItemType.boardElement;
+export class ConcreteBlock extends BoardElement {
+	elementType: BoardElementType = BoardElementType.default;
 }

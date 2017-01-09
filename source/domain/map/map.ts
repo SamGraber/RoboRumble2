@@ -1,6 +1,7 @@
 import { filter, each, remove } from 'lodash';
 
 import { MapItem, MapItemType, Permeability } from './mapItem/index';
+import { BoardElement } from '../boardElements/boardElement';
 import { Robot } from '../robot/index';
 import { Point, Ray, heading } from '../../utilities/angles/index';
 
@@ -17,8 +18,8 @@ export class Map {
 		return filter(this.items, item => item.type == MapItemType.npc);
 	}
 
-	getBoardElements(): MapItem[] {
-		return filter(this.items, item => item.type == MapItemType.boardElement);
+	getBoardElements(): BoardElement[] {
+		return <any[]>filter(this.items, item => item.type == MapItemType.boardElement);
 	}
 
 	move(movingItem: MapItem, direction: Point, pushed?: boolean): boolean {
