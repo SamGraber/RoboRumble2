@@ -1,8 +1,7 @@
 import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
-import { Complexity } from '../complexity.enum';
-import { Instruction, IInstruction } from '../../program/instruction.enum';
-import { heading } from '../../../utilities/angles/heading';
+import { Instruction } from '../../program/instruction.enum';
+import { heading } from '../../../utilities/angles/index';
 
 export class BasicWheels extends Module {
 	slots: number = 4;
@@ -12,35 +11,33 @@ export class BasicWheels extends Module {
 		super();
 	}
 
-	getInstructionList(complexityLevel: Complexity): IInstruction[] {
-		let instructions = [
+	getInstructionList(): Instruction[] {
+		return [
+			Instruction.move1,
 			Instruction.move2,
 			Instruction.turnLeft,
 			Instruction.turnRight,
+			Instruction.uTurn,
 		];
-
-		if (complexityLevel >= Complexity.moderate) {
-			instructions.push(Instruction.move3);
-		}
-
-		return instructions;
 	}
 
 	execute(action, map): void {
-		if (action == Instruction.move2) {
-		map.move(this.robot, this.robot.heading);
-		map.move(this.robot, this.robot.heading);
-	}
-	else if (action == Instruction.move3) {
-		map.move(this.robot, this.robot.heading);
-		map.move(this.robot, this.robot.heading);
-		map.move(this.robot, this.robot.heading);
-	}
-	else if (action == Instruction.turnRight) {
-		this.robot.heading = heading.clockwise(this.robot.heading);
-	}
-	else if (action == Instruction.turnLeft) {
-		this.robot.heading = heading.counterClockwise(this.robot.heading);
-	}
+		if (action == Instruction.move1) {
+			map.move(this.robot, this.robot.heading);
+		}
+		else if (action == Instruction.move2) {
+			map.move(this.robot, this.robot.heading);
+			map.move(this.robot, this.robot.heading);
+		}
+		else if (action == Instruction.turnRight) {
+			this.robot.heading = heading.clockwise(this.robot.heading);
+		}
+		else if (action == Instruction.turnLeft) {
+			this.robot.heading = heading.counterClockwise(this.robot.heading);
+		}
+		else if (action == Instruction.uTurn) {
+			this.robot.heading = heading.clockwise(this.robot.heading);
+			this.robot.heading = heading.clockwise(this.robot.heading);
+		}
 	}
 }

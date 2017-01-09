@@ -1,7 +1,8 @@
 import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
-import { Instruction, IInstruction } from '../../program/instruction.enum';
-import { heading } from '../../../utilities/angles/heading';
+import { Complexity } from '../complexity.enum';
+import { Instruction } from '../../program/instruction.enum';
+import { heading } from '../../../utilities/angles/index';
 
 export class SpeedyWheels extends Module {
 	slots: number = 4;
@@ -11,21 +12,27 @@ export class SpeedyWheels extends Module {
 		super();
 	}
 
-	getInstructionList(): IInstruction[] {
-		return [
-			Instruction.move1,
+	getInstructionList(complexityLevel: Complexity): Instruction[] {
+		let instructions = [
 			Instruction.move2,
 			Instruction.turnLeft,
 			Instruction.turnRight,
-			Instruction.uTurn,
 		];
+
+		if (complexityLevel >= Complexity.moderate) {
+			instructions.push(Instruction.move3);
+		}
+
+		return instructions;
 	}
 
 	execute(action, map): void {
-		if (action == Instruction.move1) {
+		if (action == Instruction.move2) {
+			map.move(this.robot, this.robot.heading);
 			map.move(this.robot, this.robot.heading);
 		}
-		else if (action == Instruction.move2) {
+		else if (action == Instruction.move3) {
+			map.move(this.robot, this.robot.heading);
 			map.move(this.robot, this.robot.heading);
 			map.move(this.robot, this.robot.heading);
 		}
@@ -34,10 +41,6 @@ export class SpeedyWheels extends Module {
 		}
 		else if (action == Instruction.turnLeft) {
 			this.robot.heading = heading.counterClockwise(this.robot.heading);
-		}
-		else if (action == Instruction.uTurn) {
-			this.robot.heading = heading.clockwise(this.robot.heading);
-			this.robot.heading = heading.clockwise(this.robot.heading);
 		}
 	}
 }
