@@ -11,6 +11,7 @@ export class Ray {
 		this.origin = vector.origin;
 		this.offset = vector.offset;
 		this.inverseOffset = vector.offset.inverse();
+		// 0 is positive, 1 is negative
 		this.sign = [
 			this.toSign(this.inverseOffset.x),
 			this.toSign(this.inverseOffset.y),
