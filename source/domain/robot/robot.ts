@@ -1,8 +1,6 @@
 import { map, max, union, sortBy, reverse, each, flatten } from 'lodash';
 
-import { MapItem } from '../map/mapItem/mapItem';
-import { MapItemType } from '../map/mapItem/mapItemType.enum';
-import { Permeability } from '../map/mapItem/permeability.enum';
+import { MapItem, MapItemType, Permeability } from '../map/mapItem/index';
 import { Chassis } from './chassis';
 import { Point, Size, heading } from '../../utilities/angles/index';
 import { Instruction } from '../program/index';
@@ -11,12 +9,15 @@ import { CPU } from '../modules/index';
 export class Robot extends MapItem {
 	type: MapItemType = MapItemType.robot;
 	permeability: Permeability = Permeability.moveable;
-	coordinate: Point;
-	size: Size = { x: 1, y: 1, z: 1 };
 	heading: Point = heading.south;
 	chassis: Chassis;
 	mods = [];
 	priorities = [];
+
+	constructor() {
+		super();
+		this.size = { x: 1, y: 1, z: 1 };
+	}
 
 	getAllInstructions(): Instruction[] {
 		const cpus = this.chassis.getCPUs();
