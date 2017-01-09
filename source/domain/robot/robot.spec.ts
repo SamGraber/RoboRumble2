@@ -1,7 +1,10 @@
 import { Robot } from './robot';
 import { Chassis } from './chassis';
-import { Complexity, SpeedyWheels, CPU, Module, ModuleType } from '../modules/index';
-import { Instruction } from '../program/index';
+import { Complexity, SpeedyWheels, BasicWheels, BasicProcessor, CPU, Module, ModuleType } from '../modules/index';
+import { Instruction, ProgramInstruction } from '../program/index';
+import { ConcreteBlock } from '../boardElements/concreteBlock';
+import { Point, heading } from '../../utilities/angles/index';
+import { Map } from '../map/map';
 
 describe('Robot', () => {
 	it('should return the instructions that the robots modules support', () => {
@@ -107,32 +110,32 @@ describe('Robot', () => {
 		}
 	});
 	
-	// it('should run the instruction and move 1 space', () => {
-	// 	//integration test for robot, cpu, programInstruction, drive, and map
-	// 	const floor = new ConcreteBlock();
-	// 	floor.coordinate = new Point(0, 0, 1);
-	// 	floor.size = new Size(2, 2, 0);
+	it('should run the instruction and move 1 space', () => {
+		//integration test for robot, cpu, programInstruction, drive, and map
+		const floor = new ConcreteBlock();
+		floor.coordinate = new Point(0, 0, 1);
+		floor.size = { x: 2, y: 2, z: 0 };
 		
-	// 	const robot = new Robot();
-	// 	robot.coordinate = new Point(0, 0, 1);
-	// 	robot.heading = heading.south;
+		const robot = new Robot();
+		robot.coordinate = new Point(0, 0, 1);
+		robot.heading = heading.south;
 		
-	// 	const drive = new BasicWheels(robot);
+		const drive = new BasicWheels(robot);
 	
-	// 	const cpu = new BasicProcessor(robot);
-	// 	cpu.instructions = { '1': new ProgramInstruction(drive, instruction.move1) };
+		const cpu = new BasicProcessor(robot);
+		cpu.instructions = { '1': new ProgramInstruction(drive, Instruction.move1) };
 		
-	// 	robot.chassis = new Chassis();
-	// 	robot.chassis.modules = [ cpu, drive ];
+		robot.chassis = new Chassis();
+		robot.chassis.modules = [ cpu, drive ];
 		
-	// 	const map = new Map();
-	// 	map.items.push(floor);
-	// 	map.items.push(robot);
+		const map = new Map();
+		map.items.push(floor);
+		map.items.push(robot);
 		
-	// 	robot.executePhase(1, map);
+		robot.executePhase(1, map);
 		
-	// 	expect(robot.coordinate.x).to.equal(0);
-	// 	expect(robot.coordinate.y).to.equal(1);
-	// 	expect(robot.coordinate.z).to.equal(1);
-	// });
+		expect(robot.coordinate.x).to.equal(0);
+		expect(robot.coordinate.y).to.equal(1);
+		expect(robot.coordinate.z).to.equal(1);
+	});
 });
