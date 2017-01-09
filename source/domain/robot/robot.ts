@@ -5,6 +5,7 @@ import { Chassis } from './chassis';
 import { Point, Size, heading } from '../../utilities/angles/index';
 import { Instruction } from '../program/index';
 import { CPU } from '../modules/index';
+import { Map } from '../map/map';
 
 export class Robot extends MapItem {
 	type: MapItemType = MapItemType.robot;
@@ -36,7 +37,7 @@ export class Robot extends MapItem {
 		return union(flatten(instructionLists));
 	}
 
-	executePhase(phase: number, map) {
+	executePhase(phase: number, map: Map) {
 		const cpus: CPU[] = reverse(sortBy(this.chassis.getCPUs(), cpu => cpu.cpuPriority));
 
 		each(cpus, cpu => cpu.executeInstruction(phase, map));

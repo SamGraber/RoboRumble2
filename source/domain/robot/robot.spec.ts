@@ -86,7 +86,7 @@ describe('Robot', () => {
 			robot.chassis = new Chassis();
 			robot.chassis.modules = [ cpu1, cpu2, cpu3 ];
 			
-			robot.executePhase(1, {});
+			robot.executePhase(1, <any>{});
 			
 			expect(turns).to.equal(3);
 		});

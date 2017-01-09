@@ -2,6 +2,7 @@ import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
 import { Instruction } from '../../program/instruction.enum';
 import { heading } from '../../../utilities/angles/index';
+import { Map } from '../../map/map';
 
 export class BasicWheels extends Module {
 	slots: number = 4;
@@ -21,7 +22,7 @@ export class BasicWheels extends Module {
 		];
 	}
 
-	execute(action, map): void {
+	execute(action, map: Map): void {
 		if (action == Instruction.move1) {
 			map.move(this.robot, this.robot.heading);
 		}

@@ -3,6 +3,7 @@ import { ModuleType } from '../moduleType.enum';
 import { Complexity } from '../complexity.enum';
 import { Instruction } from '../../program/instruction.enum';
 import { heading } from '../../../utilities/angles/index';
+import { Map } from '../../map/map';
 
 export class SpeedyWheels extends Module {
 	slots: number = 4;
@@ -26,7 +27,7 @@ export class SpeedyWheels extends Module {
 		return instructions;
 	}
 
-	execute(action, map): void {
+	execute(action, map: Map): void {
 		if (action == Instruction.move2) {
 			map.move(this.robot, this.robot.heading);
 			map.move(this.robot, this.robot.heading);
