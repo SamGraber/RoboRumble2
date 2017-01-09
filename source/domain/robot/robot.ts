@@ -13,7 +13,7 @@ export class Robot extends MapItem {
 	heading: Point = heading.south;
 	chassis: Chassis;
 	mods = [];
-	priorities = [];
+	priorities = {};
 
 	constructor() {
 		super();
