@@ -2,8 +2,7 @@ import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
 import { Complexity } from '../complexity.enum';
 import { Instruction } from '../../program/instruction.enum';
-import { heading } from '../../../utilities/angles/index';
-import { Map } from '../../map/map';
+import { MovementEngine, Rotation } from '../../movement/movement';
 
 export class SpeedyWheels extends Module {
 	slots: number = 4;
@@ -27,21 +26,21 @@ export class SpeedyWheels extends Module {
 		return instructions;
 	}
 
-	execute(action, map: Map): void {
+	execute(action, mover: MovementEngine): void {
 		if (action == Instruction.move2) {
-			map.move(this.robot, this.robot.heading);
-			map.move(this.robot, this.robot.heading);
+			mover.move(this.robot);
+			mover.move(this.robot);
 		}
 		else if (action == Instruction.move3) {
-			map.move(this.robot, this.robot.heading);
-			map.move(this.robot, this.robot.heading);
-			map.move(this.robot, this.robot.heading);
+			mover.move(this.robot);
+			mover.move(this.robot);
+			mover.move(this.robot);
 		}
 		else if (action == Instruction.turnRight) {
-			this.robot.heading = heading.clockwise(this.robot.heading);
+			mover.turn(this.robot, Rotation.clockwise);
 		}
 		else if (action == Instruction.turnLeft) {
-			this.robot.heading = heading.counterClockwise(this.robot.heading);
+			mover.turn(this.robot, Rotation.counterClockwise);
 		}
 	}
 }

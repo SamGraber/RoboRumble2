@@ -2,7 +2,7 @@ import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
 import { Complexity } from '../complexity.enum';
 import { CPU } from '../cpu';
-import { Map } from '../../map/map';
+import { MovementEngine } from '../../movement/movement';
 
 export class BasicProcessor extends Module implements CPU {
 	slots: number = 2;
@@ -22,7 +22,7 @@ export class BasicProcessor extends Module implements CPU {
 		}
 	}
 
-	executeInstruction(phase: number, map: Map): void {
-		this.instructions[phase].execute(map);
+	executeInstruction(phase: number, mover: MovementEngine): void {
+		this.instructions[phase].execute(mover);
 	}
 }

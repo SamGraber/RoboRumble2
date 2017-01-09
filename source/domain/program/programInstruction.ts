@@ -1,11 +1,11 @@
 import { Instruction } from './instruction.enum';
 import { Module } from '../modules/module';
-import { Map } from '../map/map';
+import { MovementEngine } from '../movement/movement';
 
 export class ProgramInstruction {
 	constructor(public module: Module, public instruction: Instruction) {}
 
-	execute(map: Map) {
-		this.module.execute(this.instruction, map);
+	execute(mover: MovementEngine) {
+		this.module.execute(this.instruction, mover);
 	}
 }

@@ -1,8 +1,7 @@
 import { Module } from '../module';
 import { ModuleType } from '../moduleType.enum';
 import { Instruction } from '../../program/instruction.enum';
-import { heading } from '../../../utilities/angles/index';
-import { Map } from '../../map/map';
+import { MovementEngine, Rotation } from '../../movement/movement';
 
 export class BasicWheels extends Module {
 	slots: number = 4;
@@ -22,23 +21,23 @@ export class BasicWheels extends Module {
 		];
 	}
 
-	execute(action, map: Map): void {
+	execute(action, mover: MovementEngine): void {
 		if (action == Instruction.move1) {
-			map.move(this.robot, this.robot.heading);
+			mover.move(this.robot);
 		}
 		else if (action == Instruction.move2) {
-			map.move(this.robot, this.robot.heading);
-			map.move(this.robot, this.robot.heading);
+			mover.move(this.robot);
+			mover.move(this.robot);
 		}
 		else if (action == Instruction.turnRight) {
-			this.robot.heading = heading.clockwise(this.robot.heading);
+			mover.turn(this.robot, Rotation.clockwise);
 		}
 		else if (action == Instruction.turnLeft) {
-			this.robot.heading = heading.counterClockwise(this.robot.heading);
+			mover.turn(this.robot, Rotation.counterClockwise);
 		}
 		else if (action == Instruction.uTurn) {
-			this.robot.heading = heading.clockwise(this.robot.heading);
-			this.robot.heading = heading.clockwise(this.robot.heading);
+			mover.turn(this.robot, Rotation.clockwise);
+			mover.turn(this.robot, Rotation.clockwise);
 		}
 	}
 }

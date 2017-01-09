@@ -5,6 +5,7 @@ import { Instruction, ProgramInstruction } from '../program/index';
 import { ConcreteBlock } from '../boardElements/concreteBlock';
 import { Point, heading } from '../../utilities/angles/index';
 import { Map } from '../map/map';
+import { MovementEngine } from '../movement/movement';
 
 describe('Robot', () => {
 	it('should return the instructions that the robots modules support', () => {
@@ -132,7 +133,7 @@ describe('Robot', () => {
 		map.items.push(floor);
 		map.items.push(robot);
 		
-		robot.executePhase(1, map);
+		robot.executePhase(1, map.movementEngine);
 		
 		expect(robot.coordinate.x).to.equal(0);
 		expect(robot.coordinate.y).to.equal(1);

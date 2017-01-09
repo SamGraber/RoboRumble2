@@ -1,13 +1,13 @@
 import { ModuleType } from './moduleType.enum';
 import { Complexity } from './complexity.enum';
 import { Instruction } from '../program/instruction.enum';
-import { Map } from '../map/map';
+import { MovementEngine } from '../movement/movement';
 
 export interface IModule {
 	exhausted: boolean;
 	type: ModuleType;
 	
-	execute(instruction, map: Map): void;
+	execute(instruction, mover: MovementEngine): void;
 	getInstructionList(complexityLevel: Complexity): Instruction[];
 	refresh(): void;
 }
@@ -16,7 +16,7 @@ export abstract class Module {
 	exhausted: boolean = false;
 	abstract type: ModuleType;
 
-	execute(instruction, map: Map): void {
+	execute(instruction, mover: MovementEngine): void {
 		throw new Error('Not implemented');
 	}
 

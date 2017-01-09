@@ -1,141 +1,76 @@
 import { BasicWheels } from './basicWheels';
-import { ConcreteBlock } from '../../boardElements/concreteBlock';
-import { Robot } from '../../robot/index';
 import { Instruction } from '../../program/index';
-import { Map } from '../../map/map';
-import { Point, heading } from '../../../utilities/angles/index';
+import { Rotation } from '../../movement/movement';
+
+interface IMover {
+	move: Sinon.SinonSpy;
+	turn: Sinon.SinonSpy;
+}
 
 describe('BasicWheels', () => {
-	it('should move one space', () => {
-		var floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0 };
-		
-		var robot = new Robot();
-		robot.coordinate = new Point(0, 0, 0);
-		robot.heading = heading.south;
-		
-		var drive = new BasicWheels(robot);
-		
-		robot.chassis = <any>{
-			modules: [ drive ],
+	let mover: IMover;
+
+	beforeEach(() => {
+		mover = {
+			move: sinon.spy(),
+			turn: sinon.spy(),
 		};
+	});
+
+	it('should provide a known list of move instructions with simple complexity', () => {
+		const module = new BasicWheels(<any>{});
+		const expectedInstructions = [
+			Instruction.move1,
+			Instruction.move2,
+			Instruction.turnLeft,
+			Instruction.turnRight,
+			Instruction.uTurn,
+		];
 		
-		var map = new Map();
-		map.items.push(floor);
-		map.items.push(robot);
-		
-		drive.execute(Instruction.move1, map);
-		
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(1);
-		expect(robot.coordinate.z).to.equal(0);
+		const availableInstructions = module.getInstructionList();
+
+		expect(availableInstructions).to.deep.equal(expectedInstructions);
+	});
+
+	it('should move one space', () => {
+		const drive = new BasicWheels(null);
+		drive.execute(Instruction.move1, <any>mover);
+		sinon.assert.calledOnce(mover.move);
 	});
 	
 	it('should move two spaces', () => {
-		var floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 3, y: 3, z: 0 };
-		
-		var robot = new Robot();
-		robot.coordinate = new Point(0, 0, 0);
-		robot.heading = heading.south;
-		
-		var drive = new BasicWheels(robot);
-		
-		robot.chassis = <any>{
-			modules: [ drive ],
-		};
-		
-		var map = new Map();
-		map.items.push(floor);
-		map.items.push(robot);
-		
-		drive.execute(Instruction.move2, map);
-		
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(2);
-		expect(robot.coordinate.z).to.equal(0);
+		const drive = new BasicWheels(null);
+		drive.execute(Instruction.move2, <any>mover);
+		sinon.assert.calledTwice(mover.move);
 	});
 	
 	it('should rotate right', () => {
-		var floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0 };
+		const robot = {};
+		const drive = new BasicWheels(<any>robot);
 		
-		var robot = new Robot();
-		robot.coordinate = new Point(0, 0, 0);
-		robot.heading = heading.east;
+		drive.execute(Instruction.turnRight, <any>mover);
 		
-		var drive = new BasicWheels(robot);
-		
-		robot.chassis = <any>{
-			modules: [ drive ],
-		};
-		
-		var map = new Map();
-		map.items.push(floor);
-		map.items.push(robot);
-		
-		drive.execute(Instruction.turnRight, map);
-		
-		expect(robot.heading).to.equal(heading.south);
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(0);
-		expect(robot.coordinate.z).to.equal(0);
+		sinon.assert.calledOnce(mover.turn);
+		sinon.assert.calledWith(mover.turn, robot, Rotation.clockwise);
 	});
 	
 	it('should rotate left', () => {
-		var floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0};
+		const robot = {};
+		const drive = new BasicWheels(<any>robot);
 		
-		var robot = new Robot();
-		robot.coordinate = new Point(0, 0, 0);
-		robot.heading = heading.west;
+		drive.execute(Instruction.turnLeft, <any>mover);
 		
-		var drive = new BasicWheels(robot);
-		
-		robot.chassis = <any>{
-			modules: [ drive ],
-		};
-		
-		var map = new Map();
-		map.items.push(floor);
-		map.items.push(robot);
-		
-		drive.execute(Instruction.turnLeft, map);
-		
-		expect(robot.heading).to.equal(heading.south);
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(0);
-		expect(robot.coordinate.z).to.equal(0);
+		sinon.assert.calledOnce(mover.turn);
+		sinon.assert.calledWith(mover.turn, robot, Rotation.counterClockwise);
 	});
 	
-	it('should rotate 180 degrees', () => {
-		var floor = new ConcreteBlock();
-		floor.coordinate = new Point(0, 0, 0);
-		floor.size = { x: 2, y: 2, z: 0 };
+	it('should rotate twice to the right', () => {
+		const robot = {};
+		const drive = new BasicWheels(<any>robot);
 		
-		var robot = new Robot();
-		robot.coordinate = new Point(0, 0, 0);
-		robot.heading = heading.north;
+		drive.execute(Instruction.uTurn, <any>mover);
 		
-		var drive = new BasicWheels(robot);
-		
-		robot.chassis = <any>{
-			modules: [ drive ],
-		};
-		
-		var map = new Map();
-		map.items.push(floor);
-		map.items.push(robot);
-		
-		drive.execute(Instruction.uTurn, map);
-		
-		expect(robot.heading).to.equal(heading.south);
-		expect(robot.coordinate.x).to.equal(0);
-		expect(robot.coordinate.y).to.equal(0);
-		expect(robot.coordinate.z).to.equal(0);
+		sinon.assert.calledTwice(mover.turn);
+		sinon.assert.calledWith(mover.turn, robot, Rotation.clockwise);
 	});
 });

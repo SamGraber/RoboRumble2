@@ -67,7 +67,7 @@ export class Scheduler {
 	}
 
 	private takeRobotTurn(robot: Robot): void {
-		robot.executePhase(this.phase, this.map);
+		robot.executePhase(this.phase, this.map.movementEngine);
 	}
 
 	private takeNPCTurn(npc): void {

@@ -2,13 +2,19 @@ import { filter, each, remove } from 'lodash';
 
 import { MapItem, MapItemType, Permeability } from './mapItem/index';
 import { BoardElement } from '../boardElements/boardElement';
+import { MovementEngine } from '../movement/movement';
 import { Robot } from '../robot/index';
 import { Point, Ray, heading } from '../../utilities/angles/index';
 
 export class Map {
 	game;
+	movementEngine: MovementEngine;
 	items: MapItem[] = [];
 	bottom: number = -5;
+
+	constructor() {
+		this.movementEngine = new MovementEngine(this);
+	}
 
 	getRobots(): Robot[] {
 		return <any[]>filter(this.items, item => item.type == MapItemType.robot);
