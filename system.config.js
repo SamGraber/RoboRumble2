@@ -4,6 +4,9 @@ var packages = {
 	'source': {
 		defaultExtension: 'js',
 	},
+	'lodash': {
+		main: 'index.js',
+	},
 	'node_modules': {
 		defaultExtension: 'js',
 	},

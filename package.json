@@ -4,7 +4,13 @@
   "description": "An online turn-based strategy game. Players build robots and program them to win contests.",
   "main": "server.js",
   "scripts": {
-    "test": "grunt"
+    "prepublish": "npm run build",
+    "build": "tsc && echo Build complete",
+    "build.watch": "tsc -w",
+    "test": "karma start config/karma.conf.js",
+    "test.debug": "karma start config/karma.debug.conf.js",
+    "build-test": "npm run build && npm run test",
+    "build-test.watch": "npm run build && npm-run-all --parallel build.watch test.debug"
   },
   "repository": {
     "type": "git",
@@ -30,16 +36,9 @@
     "url": "https://github.com/SamGraber/Robo-Rumble/issues"
   },
   "homepage": "https://github.com/SamGraber/Robo-Rumble",
-  "scripts": {
-    "prepublish": "npm run build",
-    "build": "tsc && echo Build complete",
-    "build.watch": "tsc -w",
-    "test": "karma start config/karma.conf.js",
-    "test.debug": "karma start config/karma.debug.conf.js",
-    "build-test": "npm run build && npm run test",
-    "build-test.watch": "npm run build && npm-run-all --parallel build.watch test.debug"
-  },
   "dependencies": {
+    "@types/lodash": "^4.14.48",
+    "lodash": "^4.17.4",
     "systemjs": "^0.19.41"
   },
   "devDependencies": {
